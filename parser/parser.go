@@ -164,8 +164,11 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 		return nil
 	}
 
-	// TODO: expressionのread
-	for !p.currentTokenIs(token.SEMICOLON) {
+	p.nextToken()
+	stmt.Value = p.parseExpression(LOWEST)
+
+	// semicolon 省略可
+	if p.peekTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
 
@@ -179,8 +182,9 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 	// NOTE: 文頭のキーワードのassertは不要。ここに来ている時点でassertしたようなもの
 	p.nextToken()
 
-	// TODO: expressionのread
-	for !p.currentTokenIs(token.SEMICOLON) {
+	stmt.ReturnValue = p.parseExpression(LOWEST)
+
+	if p.peekTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
 
@@ -208,7 +212,7 @@ func (p *Parser) currentTokenIs(tt token.TokenType) bool {
 }
 
 func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
-	defer untrace(trace("parseExpressionStatement"))
+	// defer untrace(trace("parseExpressionStatement"))
 	stmt := &ast.ExpressionStatement{Token: p.currentToken}
 
 	stmt.Expression = p.parseExpression(LOWEST)
@@ -226,7 +230,7 @@ func (p *Parser) parseBlockStatement() *ast.BlockStatement {
 
 	p.nextToken()
 
-	for !p.currentTokenIs(token.RBRACE) && p.currentTokenIs(token.EOF) {
+	for !p.currentTokenIs(token.RBRACE) && !p.currentTokenIs(token.EOF) {
 		stmt := p.parseStatement()
 		if stmt != nil {
 			expr.Statements = append(expr.Statements, stmt)
@@ -242,7 +246,7 @@ func (p *Parser) parseBlockStatement() *ast.BlockStatement {
 ***************************/
 // parserの中で最重要
 func (p *Parser) parseExpression(precedence int) ast.Expression {
-	defer untrace(trace("parseExpression"))
+	// defer untrace(trace("parseExpression"))
 	prefix := p.prefixParseFns[p.currentToken.Type]
 	if prefix == nil {
 		p.noPrefixParseFnError(p.currentToken.Type)
@@ -268,7 +272,7 @@ func (p *Parser) parseIdentifier() ast.Expression {
 }
 
 func (p *Parser) parseIntegerLiteral() ast.Expression {
-	defer untrace(trace("parseIntegerLiteral"))
+	// defer untrace(trace("parseIntegerLiteral"))
 	expr := &ast.IntegerLiteral{Token: p.currentToken}
 	value, err := strconv.ParseInt(p.currentToken.Literal, 0, 0)
 	if err != nil {
@@ -281,13 +285,13 @@ func (p *Parser) parseIntegerLiteral() ast.Expression {
 }
 
 func (p *Parser) parseBoolean() ast.Expression {
-	defer untrace(trace("parseBoolean"))
+	// defer untrace(trace("parseBoolean"))
 	return &ast.Boolean{Token: p.currentToken, Value: p.currentTokenIs(token.TRUE)}
 }
 
 
 func (p *Parser) parsePrefixExpression() ast.Expression {
-	defer untrace(trace("parsePrefixExpression"))
+	// defer untrace(trace("parsePrefixExpression"))
 	expr := &ast.PrefixExpression{
 		Token:    p.currentToken,
 		Operator: p.currentToken.Literal,
@@ -301,7 +305,7 @@ func (p *Parser) parsePrefixExpression() ast.Expression {
 }
 
 func (p *Parser) parseInfixExpression(leftExpr ast.Expression) ast.Expression {
-	defer untrace(trace("parseInfixExpression"))
+	// defer untrace(trace("parseInfixExpression"))
 	expr := &ast.InfixExpression{
 		Token:    p.currentToken,
 		Left:     leftExpr,
@@ -317,7 +321,7 @@ func (p *Parser) parseInfixExpression(leftExpr ast.Expression) ast.Expression {
 
 
 func (p *Parser) parseGroupedExpression() ast.Expression {
-	defer untrace(trace("parseGroupedExpression"))
+	// defer untrace(trace("parseGroupedExpression"))
 	
 	p.nextToken()
 	expr := p.parseExpression(LOWEST)
@@ -375,7 +379,7 @@ func (p *Parser) parseFunctionLiteral() ast.Expression {
 	// fn(p1, p2) の )まで進む
 	node.Parameters = p.parseFunctionParameters()
 
-	if p.expectPeek(token.LBRACE) {
+	if !p.expectPeek(token.LBRACE) {
 		return nil
 	}
 
