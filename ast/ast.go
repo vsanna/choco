@@ -1,8 +1,10 @@
 package ast
 
-import "interpreter/token"
-import "bytes"
-import "strings"
+import (
+	"bytes"
+	"interpreter/token"
+	"strings"
+)
 
 // astを構成するNode
 type Node interface {
@@ -110,9 +112,8 @@ func (node *ExpressionStatement) String() string {
 	return ""
 }
 
-
 type BlockStatement struct {
-	Token    token.Token
+	Token      token.Token
 	Statements []Statement
 }
 
@@ -127,11 +128,9 @@ func (node *BlockStatement) String() string {
 	for _, stmt := range node.Statements {
 		out.WriteString(stmt.String())
 	}
-	
+
 	return out.String()
 }
-
-
 
 /*****************
 * Expression
@@ -164,6 +163,20 @@ func (node *IntegerLiteral) String() string {
 	return node.Token.Literal
 }
 
+type StringLiteral struct {
+	Token token.Token
+	Value string // long
+}
+
+func (node *StringLiteral) expressionNode() {
+}
+func (node *StringLiteral) TokenLiteral() string {
+	return node.Token.Literal
+}
+func (node *StringLiteral) String() string {
+	return node.Token.Literal
+}
+
 type Boolean struct {
 	Token token.Token
 	Value bool // long
@@ -179,7 +192,6 @@ func (node *Boolean) String() string {
 	return node.Token.Literal
 }
 
-
 type PrefixExpression struct {
 	Token    token.Token
 	Operator string
@@ -190,7 +202,7 @@ func (node *PrefixExpression) expressionNode() {}
 
 func (node *PrefixExpression) TokenLiteral() string {
 	return node.Token.Literal
-}   
+}
 
 func (node *PrefixExpression) String() string {
 	var out bytes.Buffer
@@ -208,6 +220,7 @@ type InfixExpression struct {
 
 	Left Expression
 }
+
 func (node *InfixExpression) expressionNode() {}
 
 func (node *InfixExpression) TokenLiteral() string {
@@ -223,10 +236,9 @@ func (node *InfixExpression) String() string {
 	return out.String()
 }
 
-
 type IfExpression struct {
-	Token    token.Token
-	Condition Expression
+	Token       token.Token
+	Condition   Expression
 	Consequence *BlockStatement // TODO: nullableにするにはpointerにする?
 	Alternative *BlockStatement
 }
@@ -242,20 +254,20 @@ func (node *IfExpression) String() string {
 	out.WriteString(node.Condition.String())
 	out.WriteString(" ")
 	out.WriteString(node.Consequence.String())
-	
+
 	if node.Alternative != nil {
 		out.WriteString("else ")
 		out.WriteString(node.Alternative.String())
 	}
-	
+
 	return out.String()
 }
 
 // 関数定義の方の式
 type FunctionLiteral struct {
-	Token    token.Token
+	Token      token.Token
 	Parameters []*Identifier
-	Body *BlockStatement
+	Body       *BlockStatement
 }
 
 func (node *FunctionLiteral) expressionNode() {}
@@ -265,7 +277,7 @@ func (node *FunctionLiteral) TokenLiteral() string {
 }
 func (node *FunctionLiteral) String() string {
 	var out bytes.Buffer
-	
+
 	params := []string{}
 	for _, p := range node.Parameters {
 		params = append(params, p.String())
@@ -281,8 +293,8 @@ func (node *FunctionLiteral) String() string {
 
 // 関数呼び出しの式
 type CallExpression struct {
-	Token    token.Token
-	Function Expression
+	Token     token.Token
+	Function  Expression
 	Arguments []Expression
 }
 
@@ -293,7 +305,7 @@ func (node *CallExpression) TokenLiteral() string {
 }
 func (node *CallExpression) String() string {
 	var out bytes.Buffer
-	
+
 	params := []string{}
 	for _, p := range node.Arguments {
 		params = append(params, p.String())
@@ -306,3 +318,70 @@ func (node *CallExpression) String() string {
 	return out.String()
 }
 
+type ArrayLiteral struct {
+	Token    token.Token
+	Elements []Expression
+}
+
+func (node *ArrayLiteral) expressionNode() {}
+
+func (node *ArrayLiteral) TokenLiteral() string {
+	return node.Token.Literal
+}
+func (node *ArrayLiteral) String() string {
+	var out bytes.Buffer
+
+	params := []string{}
+	for _, p := range node.Elements {
+		params = append(params, p.String())
+	}
+
+	out.WriteString("[")
+	out.WriteString(strings.Join(params, ","))
+	out.WriteString("]")
+	return out.String()
+}
+
+type IndexExpression struct {
+	Token token.Token
+	Left  Expression
+	Index Expression
+}
+
+func (node *IndexExpression) expressionNode() {}
+
+func (node *IndexExpression) TokenLiteral() string {
+	return node.Token.Literal
+}
+func (node *IndexExpression) String() string {
+	var out bytes.Buffer
+	out.WriteString("(")
+	out.WriteString(node.Left.String())
+	out.WriteString("[")
+	out.WriteString(node.Index.String())
+	out.WriteString("])")
+	return out.String()
+}
+
+type HashLiteral struct {
+	Token token.Token
+	Pairs map[Expression]Expression
+}
+
+func (node *HashLiteral) expressionNode() {}
+
+func (node *HashLiteral) TokenLiteral() string {
+	return node.Token.Literal
+}
+func (node *HashLiteral) String() string {
+	var out bytes.Buffer
+	pairs := []string{}
+	for key, val := range node.Pairs {
+		pairs = append(pairs, key.String()+":"+val.String())
+	}
+
+	out.WriteString("{")
+	out.WriteString(strings.Join(pairs, ","))
+	out.WriteString("}")
+	return out.String()
+}
