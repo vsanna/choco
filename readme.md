@@ -47,8 +47,9 @@ $ choco your-code.choco
 ## how to build(for dev)
 
 ```bash
-$ rm -f ichoco && cd app/repl && go build main.go && mv main ../../ichoco && cd ../../
-$ rm -f choco && cd app/runner && go build main.go && mv main ../../choco && cd ../../
+$ rm -f ichoco && cd src/app/repl && go build main.go && mv main ../../../ichoco && cd ../../../
+$ rm -f choco && cd src/app/runner && go build main.go && mv main ../../../choco && cd ../../../
+TODO: write makefile
 ```
 
 ## TODO

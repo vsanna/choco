@@ -2,7 +2,7 @@ package evaluator
 
 import (
 	"fmt"
-	"interpreter/object"
+	"interpreter/src/object"
 )
 
 var builtins = map[string]*object.Builtin{

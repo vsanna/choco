@@ -2,8 +2,8 @@ package evaluator
 
 import (
 	"fmt"
-	"interpreter/ast"
-	"interpreter/object"
+	"interpreter/src/ast"
+	"interpreter/src/object"
 )
 
 var (

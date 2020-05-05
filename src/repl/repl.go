@@ -3,10 +3,10 @@ package repl
 import (
 	"bufio"
 	"fmt"
-	"interpreter/evaluator"
-	"interpreter/lexer"
-	"interpreter/parser"
-	"interpreter/object"
+	"interpreter/src/evaluator"
+	"interpreter/src/lexer"
+	"interpreter/src/object"
+	"interpreter/src/parser"
 	"io"
 )
 
