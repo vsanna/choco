@@ -1,0 +1,25 @@
+let thresholdForAdult = 20;
+let user = {
+    "name": "Tom",
+    "age": thresholdForAdult + 10
+}
+let youngUser = {
+    "name": "Tom",
+    "age": thresholdForAdult - 1
+}
+puts(user)
+
+let userrole = if (user["age"] >= thresholdForAdult) {
+                 return "ADULT"
+               } else {
+                 return "CHILD"
+               }
+
+let showNameIfAdult = fn(user) {
+    if (userrole == "ADULT") {
+        puts(user["name"])
+    }
+}
+
+showNameIfAdult(user)
+showNameIfAdult(youngUser)

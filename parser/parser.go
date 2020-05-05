@@ -23,6 +23,8 @@ const (
 var precedences = map[token.TokenType]int{
 	token.EQ:       EQUALS,
 	token.NOT_EQ:   EQUALS,
+	token.GTEQ:     LESSGREATER,
+	token.LTEQ:     LESSGREATER,
 	token.LT:       LESSGREATER,
 	token.GT:       LESSGREATER,
 	token.PLUS:     SUM,
@@ -78,6 +80,8 @@ func New(lexer *lexer.Lexer) *Parser {
 	p.registerInfix(token.NOT_EQ, p.parseInfixExpression)
 	p.registerInfix(token.LT, p.parseInfixExpression)
 	p.registerInfix(token.GT, p.parseInfixExpression)
+	p.registerInfix(token.GTEQ, p.parseInfixExpression)
+	p.registerInfix(token.LTEQ, p.parseInfixExpression)
 	p.registerInfix(token.LPAREN, p.parseCallExpression)
 	p.registerInfix(token.LBRACKET, p.parseIndexExpression)
 	return p
@@ -89,7 +93,7 @@ func (p *Parser) Errors() []string {
 }
 
 func (p *Parser) peekError(tt token.TokenType) {
-	msg := fmt.Sprintf("expected next token is: %q, got %q", tt, p.peekToken.Type)
+	msg := fmt.Sprintf("current token is: %q, expected next token is: %q, got %q(%q)", p.currentToken.Literal, tt, p.peekToken.Type, p.peekToken.Literal)
 	p.addError(msg)
 }
 

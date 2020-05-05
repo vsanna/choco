@@ -1,0 +1,77 @@
+let thresholdForAdult = 20;
+
+
+let users = [
+    { "name": "user1", "age": 10 },
+    { "name": "user2", "age": 15 },
+    { "name": "user3", "age": 20 },
+    { "name": "user4", "age": 21 },
+    { "name": "user5", "age": 15 },
+]
+puts(users[0])
+
+let foreach = fn(arr, fn) {
+    let iter = fn(arr) {
+        if (len(arr) > 0) {
+            fn(first(arr))
+            iter(rest(arr))
+        }
+    }
+    iter(arr)
+}
+foreach(users, fn(user) {puts(user)})
+
+
+let filter = fn(arr, f) {
+    let iter = fn(arr, accumlated) {
+        if (len(arr) == 0) {
+            return accumlated
+        } else {
+            if (f(first(arr))) {
+                push(accumlated, first(arr))
+            }
+
+            let nextAccum = if(f(first(arr))){
+                push(accumlated, first(arr))
+            } else {
+                accumlated
+            }
+
+            iter(rest(arr), nextAccum)
+        }
+    }
+}
+let filteredUsers = filter(users, fn(user){ user["age"] >= thresholdForAdult })
+foreach(filteredUsers, fn(user) {puts(user)})
+
+
+let map = fn(arr, f) {
+    let iter = fn(arr, accumlated) {
+        if (len(arr) == 0) {
+            return accumlated
+        } else {
+            iter(rest(arr), push(accumlated, f(first(arr))))
+        }
+    }
+
+    iter(arr, [])
+}
+let extractNames = map(users, fn(user) { user["name"] })
+foreach(extractNames, fn(name) {puts(name)})
+
+
+let reduce = fn(arr, initial, f) {
+    let iter = fn(arr, result) {
+        if (len(arr) == 0) {
+            return result
+        } else {
+            iter(rest(arr), f(result, first(arr)))
+        }
+    }
+
+    iter(arr, initial)
+}
+
+let sumOfAge = reduce(users, 0, fn(accum, user) { accum + user["age"] })
+
+puts(sumOfAge(users))
