@@ -1,10 +1,10 @@
 package parser
 
 import (
+	"choco/src/ast"
+	"choco/src/lexer"
+	"choco/src/token"
 	"fmt"
-	"interpreter/src/ast"
-	"interpreter/src/lexer"
-	"interpreter/src/token"
 	"strconv"
 )
 

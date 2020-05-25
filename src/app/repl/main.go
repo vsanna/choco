@@ -1,8 +1,8 @@
 package main
 
 import (
+	"choco/src/repl"
 	"fmt"
-	"interpreter/src/repl"
 	"os"
 	"os/user"
 )

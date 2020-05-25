@@ -1,10 +1,10 @@
 package runner
 
 import (
-	"interpreter/src/evaluator"
-	"interpreter/src/lexer"
-	"interpreter/src/object"
-	"interpreter/src/parser"
+	"choco/src/evaluator"
+	"choco/src/lexer"
+	"choco/src/object"
+	"choco/src/parser"
 	"io"
 	"io/ioutil"
 )

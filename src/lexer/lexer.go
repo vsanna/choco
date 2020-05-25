@@ -1,6 +1,6 @@
 package lexer
 
-import "interpreter/src/token"
+import "choco/src/token"
 
 type Lexer struct {
 	input        string // 保持するprogram

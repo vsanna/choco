@@ -2,11 +2,11 @@ package repl
 
 import (
 	"bufio"
+	"choco/src/evaluator"
+	"choco/src/lexer"
+	"choco/src/object"
+	"choco/src/parser"
 	"fmt"
-	"interpreter/src/evaluator"
-	"interpreter/src/lexer"
-	"interpreter/src/object"
-	"interpreter/src/parser"
 	"io"
 )
 

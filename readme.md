@@ -58,6 +58,7 @@ TODO: write makefile
   - e.g. debug mode
 - exntending hash
 - make blockstatement return value
+- make error messages more informative
 
 ## (Off topic) why "choco"?
 

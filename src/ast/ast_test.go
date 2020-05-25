@@ -1,7 +1,7 @@
 package ast
 
 import (
-	"interpreter/src/token"
+	"choco/src/token"
 	"testing"
 )
 

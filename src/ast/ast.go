@@ -2,7 +2,7 @@ package ast
 
 import (
 	"bytes"
-	"interpreter/src/token"
+	"choco/src/token"
 	"strings"
 )
 

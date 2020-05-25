@@ -1,9 +1,9 @@
 package evaluator
 
 import (
+	"choco/src/ast"
+	"choco/src/object"
 	"fmt"
-	"interpreter/src/ast"
-	"interpreter/src/object"
 )
 
 var (

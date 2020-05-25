@@ -1,9 +1,9 @@
 package parser
 
 import (
+	"choco/src/ast"
+	"choco/src/lexer"
 	"fmt"
-	"interpreter/src/ast"
-	"interpreter/src/lexer"
 	"testing"
 )
 

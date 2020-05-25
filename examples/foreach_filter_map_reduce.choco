@@ -1,19 +1,27 @@
 let thresholdForAdult = 20;
 
 
+puts("")
+puts("================")
+puts("## demo for puts")
+puts("================")
 let users = [
     { "name": "user1", "age": 10 },
     { "name": "user2", "age": 15 },
     { "name": "user3", "age": 20 },
     { "name": "user4", "age": 21 },
-    { "name": "user5", "age": 15 },
+    { "name": "user5", "age": 15 }
 ]
 puts(users[0])
 
-let foreach = fn(arr, fn) {
+puts("")
+puts("================")
+puts("## demo for foreach")
+puts("================")
+let foreach = fn(arr, f) {
     let iter = fn(arr) {
         if (len(arr) > 0) {
-            fn(first(arr))
+            f(first(arr))
             iter(rest(arr))
         }
     }
@@ -21,7 +29,10 @@ let foreach = fn(arr, fn) {
 }
 foreach(users, fn(user) {puts(user)})
 
-
+puts("")
+puts("================")
+puts("## demo for filter")
+puts("================")
 let filter = fn(arr, f) {
     let iter = fn(arr, accumlated) {
         if (len(arr) == 0) {
@@ -40,11 +51,16 @@ let filter = fn(arr, f) {
             iter(rest(arr), nextAccum)
         }
     }
+    iter(arr, [])
 }
 let filteredUsers = filter(users, fn(user){ user["age"] >= thresholdForAdult })
-foreach(filteredUsers, fn(user) {puts(user)})
+foreach(filteredUsers, fn(user) { puts(user) })
 
 
+puts("")
+puts("================")
+puts("## demo for map")
+puts("================")
 let map = fn(arr, f) {
     let iter = fn(arr, accumlated) {
         if (len(arr) == 0) {
@@ -58,8 +74,14 @@ let map = fn(arr, f) {
 }
 let extractNames = map(users, fn(user) { user["name"] })
 foreach(extractNames, fn(name) {puts(name)})
+let withSymbol = map(extractNames, fn(userName) { userName + " is name." } )
+foreach(withSymbol, fn(name) {puts(name)})
 
 
+puts("")
+puts("================")
+puts("## demo for reduce")
+puts("================")
 let reduce = fn(arr, initial, f) {
     let iter = fn(arr, result) {
         if (len(arr) == 0) {
@@ -74,4 +96,4 @@ let reduce = fn(arr, initial, f) {
 
 let sumOfAge = reduce(users, 0, fn(accum, user) { accum + user["age"] })
 
-puts(sumOfAge(users))
+puts(sumOfAge)

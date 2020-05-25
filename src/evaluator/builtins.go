@@ -1,8 +1,8 @@
 package evaluator
 
 import (
+	"choco/src/object"
 	"fmt"
-	"interpreter/src/object"
 )
 
 var builtins = map[string]*object.Builtin{

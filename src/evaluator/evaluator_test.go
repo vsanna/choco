@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-	"interpreter/src/lexer"
-	"interpreter/src/object"
-	"interpreter/src/parser"
+	"choco/src/lexer"
+	"choco/src/object"
+	"choco/src/parser"
 	"testing"
 )
 

@@ -1,7 +1,7 @@
 package lexer
 
 import (
-	"interpreter/src/token"
+	"choco/src/token"
 	"testing"
 )
 

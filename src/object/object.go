@@ -2,9 +2,9 @@ package object
 
 import (
 	"bytes"
+	"choco/src/ast"
 	"fmt"
 	"hash/fnv"
-	"interpreter/src/ast"
 	"strings"
 )
 

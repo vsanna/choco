@@ -1,8 +1,8 @@
 package main
 
 import (
+	"choco/src/runner"
 	"fmt"
-	"interpreter/src/runner"
 	"os"
 )
 
